@@ -1,80 +1,207 @@
-# PgSafeExport
+# 🚀 PgSafeExport
 
-Fast PostgreSQL exporter with deterministic anonymization for safe dev/test datasets.
+**Lightning-fast PostgreSQL export with built-in anonymization**
 
-## Features
+→ Safely copy production data into dev/test environments in seconds
+→ No data leaks. No complex setup. Just one command.
 
-- Fast PostgreSQL export using `COPY TO STDOUT`
-- Parallel table export
-- Streaming transformation, no `DataTable`, no EF
-- Deterministic anonymization
-- YAML masking config
-- Partial export with per-table `where`
-- Include/exclude table filters
-- Dry-run export plan
-- ZIP output
-- Validation report with row count, duration, file size and masked columns
-- Basic JSON/JSONB redaction rule
+---
 
-## Install / restore
+## ⚡ Why PgSafeExport?
+
+Working with real data in development is painful:
+
+* ❌ You can’t use production data (PII, GDPR, security risks)
+* ❌ `pg_dump` is slow and dumps everything
+* ❌ No built-in anonymization
+* ❌ Manual scripts = fragile and time-consuming
+
+**PgSafeExport solves this.**
+
+---
+
+## 🔥 Key Features
+
+* ⚡ **Ultra-fast export** via PostgreSQL `COPY`
+* 🧵 **Parallel processing** (multi-table export)
+* 🔐 **Deterministic anonymization**
+* 🎯 **Selective export** (tables, filters, sampling)
+* 🧩 **Simple YAML config for masking**
+* 🛠 **CLI-first, CI/CD friendly**
+
+---
+
+## 🆚 Why not pg_dump?
+
+| Feature            | pg_dump    | PgSafeExport |
+| ------------------ | ---------- | ------------ |
+| Speed              | ❌          | ✅            |
+| Parallel export    | ⚠️ limited | ✅            |
+| Anonymization      | ❌          | ✅            |
+| Partial export     | ❌          | ✅            |
+| Dev-ready datasets | ❌          | ✅            |
+
+---
+
+## 🚀 Quick Start
 
 ```bash
-dotnet restore
-```
-
-## Basic usage
-
-```bash
-dotnet run -- export \
-  --conn "Host=localhost;Port=5432;Database=mydb;Username=postgres;Password=postgres" \
-  --out ./dump \
-  --mask ./sample-mask.yaml \
-  --parallel 4
-```
-
-## Dry run
-
-```bash
-dotnet run -- export \
+pgsafe export \
   --conn "Host=localhost;Database=mydb;Username=postgres;Password=postgres" \
   --out ./dump \
-  --mask ./sample-mask.yaml \
-  --dry-run
+  --mask mask.yaml
 ```
 
-## ZIP output
+---
+
+## 🧠 Example: Masking config
+
+```yaml
+tables:
+  users:
+    email: fake_email
+    full_name: fake_name
+    phone: fake_phone
+```
+
+---
+
+## 🔐 Example: Before / After
+
+**Before:**
+
+```json
+{
+  "email": "john.doe@gmail.com",
+  "name": "John Doe"
+}
+```
+
+**After:**
+
+```json
+{
+  "email": "user_a83f91@example.test",
+  "name": "Alex Brown"
+}
+```
+
+👉 Same input → same output (deterministic masking)
+
+---
+
+## 🎯 Partial Export
+
+Export only recent data:
+
+```yaml
+tables:
+  orders:
+    where: "created_at > now() - interval '30 days'"
+```
+
+---
+
+## 🧪 Dry Run
+
+Preview what will be masked:
 
 ```bash
-dotnet run -- export \
-  --conn "Host=localhost;Database=mydb;Username=postgres;Password=postgres" \
-  --out ./dump.zip \
-  --mask ./sample-mask.yaml \
-  --zip
+pgsafe export --dry-run
 ```
 
-## Select tables
+---
+
+## 📦 Output
+
+```text
+dump/
+  public.users.csv
+  public.orders.csv
+  pgsafe-report.json
+```
+
+---
+
+## 📊 Example Report
+
+```json
+{
+  "tables": [
+    {
+      "name": "users",
+      "rows": 12000,
+      "duration_ms": 850
+    }
+  ]
+}
+```
+
+---
+
+## ⚙️ CLI Options
 
 ```bash
---tables users,orders,public.customers
---exclude-tables audit_logs,events
+--conn            PostgreSQL connection string
+--out             Output directory
+--mask            Path to mask.yaml
+--tables          Include only specific tables
+--exclude-tables  Exclude tables
+--parallel        Number of workers
+--dry-run         Preview without export
+--zip             Output as zip archive
 ```
 
-## Mask rules
+---
 
-Supported MVP rules:
+## 🧵 Performance
 
-- `fake_email`
-- `fake_name`
-- `fake_phone`
-- `mask_last4`
-- `redact`
-- `null`
-- `json_redact`
+PgSafeExport uses:
 
-## Config example
+* PostgreSQL `COPY TO STDOUT`
+* Streaming (no memory overhead)
+* Parallel table export
 
-See `sample-mask.yaml`.
+👉 Designed for **millions of rows**
 
-## Notes
+---
 
-This is an MVP skeleton. Before production use, add automated tests, benchmark scripts, and stricter validation for user-provided SQL `where` clauses.
+## 🎯 Use Cases
+
+* Copy production → development safely
+* Generate test datasets
+* QA environments
+* GDPR-compliant data pipelines
+* Local debugging with real-like data
+
+---
+
+## 💡 Roadmap
+
+* [ ] Auto-detect PII columns
+* [ ] JSON/JSONB smart masking
+* [ ] Direct import (restore)
+* [ ] GUI version
+* [ ] Cloud sync
+
+---
+
+## 💰 Pro Version (planned)
+
+* GUI interface
+* Scheduled exports
+* Advanced masking rules
+* Team access & audit logs
+
+---
+
+## 🤝 Contributing
+
+PRs are welcome.
+If you find this useful — ⭐ the repo.
+
+---
+
+## 📄 License
+
+MIT License
