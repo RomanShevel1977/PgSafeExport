@@ -1,5 +1,6 @@
 # 🚀 PgSafeExport
 **One command to safely copy production data**
+
 Fast PostgreSQL export with built-in anonymization
 
 **Lightning-fast PostgreSQL export with built-in anonymization**
