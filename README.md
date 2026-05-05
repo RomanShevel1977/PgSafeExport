@@ -3,8 +3,6 @@
 
 Fast PostgreSQL export with built-in anonymization
 
-**Lightning-fast PostgreSQL export with built-in anonymization**
-
 ![License](https://img.shields.io/github/license/RomanShevel1977/PgSafeExport)
 ![Release](https://img.shields.io/github/v/release/RomanShevel1977/PgSafeExport)
 ![Language](https://img.shields.io/github/languages/top/RomanShevel1977/PgSafeExport)
