@@ -2,7 +2,11 @@
 
 **Lightning-fast PostgreSQL export with built-in anonymization**
 
-→ Safely copy production data into dev/test environments in seconds
+![License](https://img.shields.io/github/license/RomanShevel1977/PgSafeExport)
+![Release](https://img.shields.io/github/v/release/RomanShevel1977/PgSafeExport)
+![Language](https://img.shields.io/github/languages/top/RomanShevel1977/PgSafeExport)
+
+→ Safely copy production data into dev/test environments in seconds  
 → No data leaks. No complex setup. Just one command.
 
 ---
@@ -11,10 +15,10 @@
 
 Working with real data in development is painful:
 
-* ❌ You can’t use production data (PII, GDPR, security risks)
-* ❌ `pg_dump` is slow and dumps everything
-* ❌ No built-in anonymization
-* ❌ Manual scripts = fragile and time-consuming
+- ❌ You can’t use production data (PII, GDPR, security risks)
+- ❌ `pg_dump` creates full dumps without anonymization
+- ❌ Manual masking scripts are fragile and time-consuming
+- ❌ Hard to create realistic dev/test datasets safely
 
 **PgSafeExport solves this.**
 
@@ -22,183 +26,74 @@ Working with real data in development is painful:
 
 ## 🔥 Key Features
 
-* ⚡ **Ultra-fast export** via PostgreSQL `COPY`
-* 🧵 **Parallel processing** (multi-table export)
-* 🔐 **Deterministic anonymization**
-* 🎯 **Selective export** (tables, filters, sampling)
-* 🧩 **Simple YAML config for masking**
-* 🛠 **CLI-first, CI/CD friendly**
+- ⚡ High-performance export via PostgreSQL COPY
+- 🧵 Parallel processing (multi-table export)
+- 🔐 Deterministic anonymization
+- 🎯 Selective export (tables, filters)
+- 🧩 Simple YAML masking configuration
+- 🧪 Dry-run mode
+- 📦 Optional ZIP output
+- 📊 Export report with metrics
 
 ---
 
 ## 🆚 Why not pg_dump?
 
-| Feature            | pg_dump    | PgSafeExport |
-| ------------------ | ---------- | ------------ |
-| Speed              | ❌          | ✅            |
-| Parallel export    | ⚠️ limited | ✅            |
-| Anonymization      | ❌          | ✅            |
-| Partial export     | ❌          | ✅            |
-| Dev-ready datasets | ❌          | ✅            |
+| Feature              | pg_dump | PgSafeExport |
+|---------------------|--------|-------------|
+| Speed               | ⚠️ Good | ✅ Faster for selective export |
+| Parallel export     | ⚠️ Limited modes | ✅ Built-in |
+| Anonymization       | ❌ | ✅ |
+| Partial export      | ❌ | ✅ |
+| Dev-ready datasets  | ❌ | ✅ |
+
+> pg_dump is great for backups, but PgSafeExport is designed for safe data cloning into dev/test environments
 
 ---
 
 ## 🚀 Quick Start
 
-```bash
 pgsafe export \
   --conn "Host=localhost;Database=mydb;Username=postgres;Password=postgres" \
   --out ./dump \
   --mask mask.yaml
-```
 
 ---
 
-## 🧠 Example: Masking config
+## 📦 Installation
 
-```yaml
+Download the latest release:
+
+https://github.com/RomanShevel1977/PgSafeExport/releases
+
+---
+
+## 🧠 Masking Configuration
+
 tables:
   users:
-    email: fake_email
-    full_name: fake_name
-    phone: fake_phone
-```
+    columns:
+      email: fake_email
+      full_name: fake_name
+      phone: fake_phone
 
 ---
 
-## 🔐 Example: Before / After
+## 🔐 Example
 
-**Before:**
+Before:
+john.doe@gmail.com
 
-```json
-{
-  "email": "john.doe@gmail.com",
-  "name": "John Doe"
-}
-```
-
-**After:**
-
-```json
-{
-  "email": "user_a83f91@example.test",
-  "name": "Alex Brown"
-}
-```
-
-👉 Same input → same output (deterministic masking)
-
----
-
-## 🎯 Partial Export
-
-Export only recent data:
-
-```yaml
-tables:
-  orders:
-    where: "created_at > now() - interval '30 days'"
-```
-
----
-
-## 🧪 Dry Run
-
-Preview what will be masked:
-
-```bash
-pgsafe export --dry-run
-```
-
----
-
-## 📦 Output
-
-```text
-dump/
-  public.users.csv
-  public.orders.csv
-  pgsafe-report.json
-```
-
----
-
-## 📊 Example Report
-
-```json
-{
-  "tables": [
-    {
-      "name": "users",
-      "rows": 12000,
-      "duration_ms": 850
-    }
-  ]
-}
-```
-
----
-
-## ⚙️ CLI Options
-
-```bash
---conn            PostgreSQL connection string
---out             Output directory
---mask            Path to mask.yaml
---tables          Include only specific tables
---exclude-tables  Exclude tables
---parallel        Number of workers
---dry-run         Preview without export
---zip             Output as zip archive
-```
-
----
-
-## 🧵 Performance
-
-PgSafeExport uses:
-
-* PostgreSQL `COPY TO STDOUT`
-* Streaming (no memory overhead)
-* Parallel table export
-
-👉 Designed for **millions of rows**
+After:
+user_a83f91@example.test
 
 ---
 
 ## 🎯 Use Cases
 
-* Copy production → development safely
-* Generate test datasets
-* QA environments
-* GDPR-compliant data pipelines
-* Local debugging with real-like data
-
----
-
-## 💡 Roadmap
-
-* [ ] Auto-detect PII columns
-* [ ] JSON/JSONB smart masking
-* [ ] Direct import (restore)
-* [ ] GUI version
-* [ ] Cloud sync
-
----
-
-## 💰 Pro Version (planned)
-
-* GUI interface
-* Scheduled exports
-* Advanced masking rules
-* Team access & audit logs
-
----
-
-## 🤝 Contributing
-
-PRs are welcome.
-If you find this useful — ⭐ the repo.
+- Safe production → development data cloning
+- QA environments
+- GDPR workflows
 
 ---
 
