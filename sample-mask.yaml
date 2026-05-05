@@ -1,0 +1,18 @@
+autoDetect: true
+salt: "change-me-project-salt"
+
+tables:
+  users:
+    where: "created_at >= now() - interval '30 days'"
+    columns:
+      email: fake_email
+      full_name: fake_name
+      phone: fake_phone
+      password_hash: redact
+      metadata: json_redact
+
+  public.customers:
+    columns:
+      email: fake_email
+      name: fake_name
+      phone: mask_last4
