@@ -1,4 +1,4 @@
-# 🚀 PgSafeExport
+# PgSafeExport
 **One command to safely copy production data**
 
 Fast PostgreSQL export with built-in anonymization
@@ -12,7 +12,7 @@ Fast PostgreSQL export with built-in anonymization
 
 ---
 
-## ⚡ Why PgSafeExport?
+## Why PgSafeExport?
 
 Working with real data in development is painful:
 
@@ -25,20 +25,20 @@ Working with real data in development is painful:
 
 ---
 
-## 🔥 Key Features
+## Key Features
 
-- ⚡ High-performance export via PostgreSQL COPY
-- 🧵 Parallel processing (multi-table export)
-- 🔐 Deterministic anonymization
-- 🎯 Selective export (tables, filters)
-- 🧩 Simple YAML masking configuration
-- 🧪 Dry-run mode
-- 📦 Optional ZIP output
-- 📊 Export report with metrics
+- High-performance export via PostgreSQL COPY
+- Parallel processing (multi-table export)
+- Deterministic anonymization
+- Selective export (tables, filters)
+- Simple YAML masking configuration
+- Dry-run mode
+- Optional ZIP output
+- Export report with metrics
 
 ---
 
-## 🆚 Why not pg_dump?
+## Why not pg_dump?
 
 | Feature              | pg_dump | PgSafeExport |
 |---------------------|--------|-------------|
@@ -52,7 +52,7 @@ Working with real data in development is painful:
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 pgsafe export \
   --conn "Host=localhost;Database=mydb;Username=postgres;Password=postgres" \
@@ -61,7 +61,7 @@ pgsafe export \
 
 ---
 
-## 📦 Installation
+## Installation
 
 Download the latest release:
 
@@ -69,7 +69,7 @@ https://github.com/RomanShevel1977/PgSafeExport/releases
 
 ---
 
-## 🧠 Masking Configuration
+## Masking Configuration
 
 tables:
   users:
@@ -80,7 +80,7 @@ tables:
 
 ---
 
-## 🔐 Example
+## Example
 
 Before:
 john.doe@gmail.com
@@ -90,7 +90,7 @@ user_a83f91@example.test
 
 ---
 
-## 🎯 Use Cases
+## Use Cases
 
 - Safe production → development data cloning
 - QA environments
